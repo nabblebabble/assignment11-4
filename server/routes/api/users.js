@@ -1,6 +1,9 @@
 const express = require('express');
 const mongodb = require('mongodb');
 
+//mongoose 
+const UserSchema = require('../../../models/User.js');
+
 const router = express.Router();
 
 //GET ALL
@@ -9,15 +12,23 @@ router.get('/', async (req, res) => {
     res.send(await users.find({}).toArray());
 });
 
-//ADD ONE
+
+//NEW ADD ONE
 router.post('/', async (req, res) => {
     const users = await loadUsersCollection();
-    await users.insertOne({
+    const newUser = new UserSchema({
         name: req.body.name,
-        createdAt: new Date()
+        email: req.body.email,
+        password: req.body.password
+    });
+    await users.insertOne({
+        name: newUser.name,
+        email: newUser.email,
+        password: newUser.password
     });
     res.status(201).send();
 });
+
 
 //DELETE ONE
 router.delete('/:id', async (req, res) => {

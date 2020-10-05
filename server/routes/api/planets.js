@@ -1,6 +1,9 @@
 const express = require('express');
 const mongodb = require('mongodb');
 
+//mongoose
+const PlanetSchema = require('../../../models/Planet');
+
 const router = express.Router();
 
 //GET ALL
@@ -12,8 +15,20 @@ router.get('/', async (req, res) => {
 //ADD ONE
 router.post('/', async (req, res) => {
     const planets = await loadPlanetsCollection();
-    await planets.insertOne({
+    const newPlanet = new PlanetSchema({
         name: req.body.name,
+        question: req.body.question,
+        answer: req.body.answer
+    });
+    await planets.insertOne({
+        name: newPlanet.name,
+        emotion: req.body.emotion,
+        imgUrl: 'emotion' + req.body.emotion + '.jpg',
+        popularity: 0,
+        question: newPlanet.question,
+        answer: newPlanet.answer,
+        leadObject: '',
+        galaxy: 1,
         createdAt: new Date()
     });
     res.status(201).send();
