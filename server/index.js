@@ -2,6 +2,8 @@ const express = require('express');
 const bodyParser = require('body-parser'); 
 const cors = require('cors');
 
+
+
 //authentication
 const jwt = require('jsonwebtoken');
 const passport = require('passport');
@@ -26,6 +28,12 @@ const users = require('./routes/api/users');
 
 app.use('/api/planets', planets);
 app.use('/api/users', users);
+
+if(process.env.NODE === 'production') {
+    app.use(express.static(__dirname + '/public/'));
+
+    app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+}
 
 
 const port = process.env.PORT || 5000;
