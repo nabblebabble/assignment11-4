@@ -18,7 +18,8 @@ router.post('/', async (req, res) => {
     const newPlanet = new PlanetSchema({
         name: req.body.name,
         question: req.body.question,
-        answer: req.body.answer
+        answer: req.body.answer,
+        bool: req.body.bool
     });
     await planets.insertOne({
         name: newPlanet.name,
@@ -27,6 +28,7 @@ router.post('/', async (req, res) => {
         popularity: 0,
         question: newPlanet.question,
         answer: newPlanet.answer,
+        bool: newPlanet.bool,
         leadObject: '',
         galaxy: 1,
         createdAt: new Date()
